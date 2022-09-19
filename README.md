@@ -7,3 +7,5 @@ React.
 
 ## Адрес домена
 https://dipmovies.nomoredomains.sbs
+
+Ссылка на макет https://disk.yandex.ru/d/T2F3nMHK_VPMpw
