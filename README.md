@@ -1,1 +1,9 @@
-# movies-explorer-frontend
+# Проект: Movies
+
+Данный проект является дипломом по курсу "Веб-разработка" в Яндекс.Практикум
+
+## Технологии
+React.
+
+## Адрес домена
+https://dipmovies.nomoredomains.sbs

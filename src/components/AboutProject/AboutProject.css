@@ -1,0 +1,151 @@
+.about {
+  background-color: #fff;
+  padding-top: 109px;
+  padding-bottom: 95px;
+  font-family: 'Inter';
+}
+
+.about__content {
+  display: flex;
+  gap: 50px;
+  margin: 53px 70px 97px 70px;
+}
+
+.about__heading {
+  font-style: normal;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  margin-bottom: 26px;
+}
+
+.about__paragraph {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.about__time {
+  display: flex;
+  margin: 0px 70px;
+}
+
+.about__time-text_short {
+  width: 20%;
+}
+
+.about__time-text_long {
+  width: 80%;
+}
+
+.about__time-heading_green {
+  background-color: #2be080;
+}
+
+.about__time-heading_grey {
+  background-color: #f2f2f2;
+}
+
+.about__time-heading {
+  margin: 0;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000;
+  padding: 9px 0px;
+}
+
+.about__time-paragraph {
+  padding: 14px 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #a0a0a0;
+  text-align: center;
+}
+
+@media screen and ( max-width: 800px ) {
+  .about__paragraph {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about__content {
+    gap: 38px;
+    margin: 51px 50px 83px 48px;
+  }
+
+  .about__time {
+    margin: 0 55px;
+  }
+
+  .about {
+    padding-bottom: 78px;
+    padding-top: 90px;
+  }
+  .about__heading {
+    margin-bottom: 22px;
+  }
+
+  .about__time-text_short {
+    width: 21%;
+  }
+
+  .about__time-text_long {
+    width: 79%;
+  }
+}
+
+@media screen and ( max-width: 500px ) {
+  .about__content {
+    display: block;
+    min-width: 284px;
+    margin-left: 18px;
+    margin-top: 60px;
+    margin-bottom: 62px;
+  }
+
+  .about__heading {
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.04em;
+    margin-bottom: 15px;
+  }
+
+  .about__paragraph {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 57px;
+  }
+
+  .about__time {
+    margin-left: 18px;
+    min-width: 284px;
+  }
+
+  .about__time-heading {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  .about__time-paragraph {
+    font-size: 11px;
+    line-height: 13px;
+    padding-top: 11px;
+  }
+
+  .about__time-text_short {
+    width: 45%;
+  }
+
+  .about {
+    padding-bottom: 126px;
+    padding-top: 73px;
+  }
+}
