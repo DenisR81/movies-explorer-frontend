@@ -1,0 +1,159 @@
+.promo {
+  background-color: #465DFF;
+  min-height: 574px;
+}
+
+.promo__pr {
+  display: flex;
+  justify-content: space-between;
+}
+
+.promo__bl {
+  font-family: 'Inter';
+  margin-top: 75px;
+  margin-left: 70px;
+  display: flex;
+  flex-direction: column;
+}
+
+.promo__text {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  max-width: 640px;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  margin-bottom: 35px;
+}
+
+.promo__subtext {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  max-width: 310px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  margin-bottom: 0;
+  opacity: .5;
+}
+
+.promo__img {
+  margin: 75px 70px 90px;
+}
+
+.promo__nav-text {
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 3px;
+  margin-left: 70px;
+  margin-bottom: 75px;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.promo__nav-text:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+@media screen and ( max-width: 928px ) {
+  .promo__text {
+    font-size: 48px;
+    line-height: 52px;
+    margin-bottom: 21px;
+  }
+  }
+
+@media screen and ( max-width: 770px ) {
+
+  .promo__pr {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .promo__bl {
+    text-align: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 680px;
+  }
+
+  .promo__text {
+      font-size: 40px;
+      line-height: 50px;
+      text-align: center;
+      margin: 0 auto;
+      padding-bottom: 20px;
+  }
+
+  .promo__img {
+      width: 310px;
+      height: 304px;
+      align-self: center;
+      margin: 140px 0 48px 0;
+  }
+
+  .promo__subtext {
+    margin: 0 auto;
+    padding-bottom: 92px;
+    max-width: 260px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    margin-bottom: 0;
+    opacity: .5;
+  }
+
+  .promo__nav-text {
+    margin: 0;
+  }
+
+  .promo__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .promo {
+    min-height: 850px;
+  }
+}
+
+@media screen and ( max-width: 600px ) {
+  .promo__bl {
+    margin: 0 auto;
+    max-width: 310px;
+  }
+
+  .promo__text {
+    font-weight: 400;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -4%;
+    letter-spacing: -.04em;
+    margin: 0 auto;
+    padding-bottom: 23px;
+  }
+
+  .promo__img {
+    margin: 70px auto 40px;
+    width: 210px;
+    height: 206px;
+  }
+
+  .promo {
+    min-height: 630px;
+  }
+
+  .promo__subtext {
+    padding-bottom: 80px;
+  }
+}

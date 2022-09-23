@@ -1,0 +1,73 @@
+.not-found {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 700px;
+  font-family: 'Inter';
+}
+
+.not-found__header {
+  padding: 0;
+  margin: 0;
+  padding-top: 246px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 169px;
+  color: #000;
+  padding-bottom: 5px;
+}
+
+.not-found__text {
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #000;
+  padding-bottom: 184px;
+}
+
+.not-found__back {
+  padding: 0;
+  margin: 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #ff6838;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.not-found__back:hover {
+  opacity: .7;
+}
+
+@media screen and ( max-width: 500px ) {
+  .not-found {
+    min-height: 780px;
+  }
+
+  .not-found__header {
+    padding-top: 329px;
+    padding-bottom: 10px;
+    font-size: 80px;
+    line-height: 97px;
+  }
+
+  .not-found__text {
+    font-size: 12px;
+    line-height: 15px;
+    padding-bottom: 284px;
+  }
+  
+  .not-found__back {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
