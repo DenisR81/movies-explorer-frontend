@@ -1,51 +1,43 @@
-import React from "react";
 import "./SavedMovies.css";
-import ShowButMore from "../ShowButMore/ShowButMore";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+import { useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import Pic1 from "../../images/pic__COLOR_pic.svg";
-import Pic2 from "../../images/pic__COLOR_pic2.svg";
-import Pic3 from "../../images/pic__COLOR_pic3.svg";
 
-function Movies() {
-  const MOVIES_CARDS = [
-    {
-      img: Pic1,
-      title: "33 слова о дизайне",
-      duration: "1ч42м",
-      isShortFilm: false,
-      deleteFilm: true,
-    },
+function SavedMovies({
+  searchedMovies,
+  userSavedMovies,
+  handleSaveMovie,
+  handleMovieDelete,
+  handleSavedMoviesSearch,
+  loggedIn,
+  searchMoviesHandler,
+  handleCheckbox,
+  checkBoxActive,
+  searchInput,
+}) {
+  useEffect(() => {
+    handleSavedMoviesSearch();
+  }, []);
 
-    {
-      img: Pic2,
-      title: "Киноальманах «100 лет дизайна»",
-      duration: "1ч42м",
-      isShortFilm: false,
-      deleteFilm: true,
-    },
-
-    {
-      img: Pic3,
-      title: "В погоне за Бенкси",
-      duration: "1ч42м",
-      isShortFilm: false,
-      deleteFilm: true,
-    },
-  ];
   return (
     <div className="saved-movies">
-      <Header loggedIn={true} />
       <main>
-        <SearchForm />
-        <MoviesCardList data={MOVIES_CARDS} />
-        <ShowButMore />
+        <SearchForm
+          searchMoviesHandler={searchMoviesHandler}
+          handleCheckbox={handleCheckbox}
+          checkBoxActive={checkBoxActive}
+          searchInput={searchInput}
+        />
+
+        <MoviesCardList
+          searchedMovies={searchedMovies}
+          userSavedMovies={userSavedMovies}
+          handleSaveMovie={handleSaveMovie}
+          handleMovieDelete={handleMovieDelete}
+        />
       </main>
-      <Footer />
     </div>
   );
 }
 
-export default Movies;
+export default SavedMovies;

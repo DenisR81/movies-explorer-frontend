@@ -1,21 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function SearchForm({ handleSearch }) {
-  const [inputValue, setInputValue] = useState("");
-  const [shorts, setShorts] = useState(false);
-
-  const handleInput = (evt) => {
-    setInputValue(evt.target.value);
-  };
-
-  const handleSwitcher = () => {
-    setShorts(!shorts);
-  };
+function SearchForm({
+  searchMoviesHandler,
+  handleCheckbox,
+  getMovies,
+  checkBoxActive,
+  searchInput,
+}) {
+  function onSubmitForm(event) {
+    event.preventDefault();
+  }
 
   return (
-    <form className="search-form" name="search" noValidate>
+    <form
+      className="search-form"
+      name="search"
+      onSubmit={onSubmitForm}
+      noValidate
+    >
       <div className="search-form__container">
         <label className="search-form__label" htmlFor="search-query">
           <input
@@ -24,8 +28,8 @@ function SearchForm({ handleSearch }) {
             name="search-query"
             type="text"
             placeholder="Фильм"
-            onChange={handleInput}
-            value={inputValue}
+            onChange={searchMoviesHandler}
+            value={searchInput || ""}
             required
           />
         </label>
@@ -33,10 +37,14 @@ function SearchForm({ handleSearch }) {
           className="search-form__button"
           type="submit"
           aria-label="Искать"
+          onClick={getMovies}
         />
       </div>
       <label className="search-form__checkbox" htmlFor="shorts">
-        <FilterCheckbox value={shorts} onChange={handleSwitcher} />
+        <FilterCheckbox
+          handleCheckbox={handleCheckbox}
+          checkBoxActive={checkBoxActive}
+        />
         <p className="search-form__text">Короткометражки</p>
       </label>
     </form>
