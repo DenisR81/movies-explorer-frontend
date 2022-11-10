@@ -11,8 +11,8 @@ const MoviesCardList = ({
   handleMovieDelete,
   isLoading,
 }) => {
-  const [cardsCount, setCardsCount] = useState(12); //отображаемые карточки
-  const [movieList, setMovieList] = useState([]); //список загруженных фильмов
+  const [cardsCount, setCardsCount] = useState(12); 
+  const [movieList, setMovieList] = useState([]); 
   const [foundError, setFoundError] = useState("");
   const isDesktop = useMediaQuery("(min-width: 769px)");
   const isTablet = useMediaQuery("(max-width: 768px)");
@@ -60,7 +60,6 @@ const MoviesCardList = ({
   }, [cardsCount, searchedMovies, setMovieList, movieList.length]);
 
   function handleAddMoreCards() {
-    //дополнительные карточки
     if (isDesktop && !isMobile && !isTablet) {
       setCardsCount(cardsCount + 3);
     } else if (isTablet && !isMobile) {

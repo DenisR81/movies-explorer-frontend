@@ -9,6 +9,7 @@ const Card = (props) => {
   const path = useLocation();
 
   useEffect(() => {
+    // eslint-disable-next-line array-callback-return
     props.userSavedMovies.map((c) => {
       if (c.movieId === props.movies.id || props.movies.movieId) {
         setSavedCard(true);
@@ -46,9 +47,10 @@ const Card = (props) => {
       <div className="movies-card__list">
         <h3 className="movies-card__heading">{props.movies.nameRU}</h3>
 
-        {path === "/saved-movies" ? (
+        {path.pathname === "/saved-movies" ? (
           <button
             type="button"
+            isSaved
             className="movies-card__save-button movies-card__save-button_delete"
             onClick={handleLikeClick}
           />

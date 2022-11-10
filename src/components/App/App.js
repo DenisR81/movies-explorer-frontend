@@ -37,13 +37,50 @@ function App() {
   const [userSavedMovies, setUserSavedMovies] = useState([]);
   const [userSavedMoviesCopy, setUserSavedMoviesCopy] = useState([]);
   const [checkBoxActive, setCheckboxActive] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(true || false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const { pathname } = useLocation();
   const history = useHistory();
+
+  useEffect(() => {
+    getUserInfo();
+  }, [loggedIn]);
+  
+  function getUserInfo() {
+    MainApi.getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+        setLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log(SERVER_ERROR);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    if (loggedIn) {
+      MainApi.getUserInfo()
+        .then((res) => setCurrentUser(res))
+        .catch((err) => {
+          console.log(err);
+        });
+      MainApi.getMovies()
+        .then((data) => {
+          setUserSavedMovies(data);
+          setUserSavedMoviesCopy(data);
+          localStorage.setItem("userSavedMovies", JSON.stringify(data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function onRegister({ name, email, password }) {
     MainApi.registerUser({ name, email, password })
@@ -60,29 +97,13 @@ function App() {
       });
   }
 
-  const tokenCheck = () => {
-    if (localStorage.getItem("jwt")) {
-      const token = localStorage.getItem("jwt");
-      MainApi.getUserInfo(token)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true);
-            localStorage.setItem("loggedIn", loggedIn);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  };
-
   const onLogin = ({ email, password }) => {
     return MainApi.loginUser(email, password)
       .then((data) => {
         if (data) {
           localStorage.setItem("jwt", data.token);
           setLoggedIn(true);
-          tokenCheck();
+          getUserInfo();
           history.push("/movies");
         }
       })
@@ -131,25 +152,6 @@ function App() {
       return movie.nameRU.toLowerCase().includes(searchInput);
     } else return "";
   });
-
-  useEffect(() => {
-    if (loggedIn) {
-      MainApi.getUserInfo()
-        .then((res) => setCurrentUser(res))
-        .catch((err) => {
-          console.log(err);
-        });
-      MainApi.getMovies()
-        .then((data) => {
-          setUserSavedMovies(data);
-          setUserSavedMoviesCopy(data);
-          localStorage.setItem("userSavedMovies", JSON.stringify(data));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [loggedIn]);
 
   function handleSavedMoviesSearch() {
     MainApi.getMovies()
@@ -264,10 +266,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        {pathname === "/" ||
+        {pathname === "/profile" ||
         pathname === "/movies" ||
         pathname === "/saved-movies" ||
-        pathname === "/profile" ? (
+        pathname === "/" ? (
           <Header loggedIn={loggedIn} isLoading={isLoading} />
         ) : (
           ""
