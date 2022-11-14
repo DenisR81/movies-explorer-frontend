@@ -50,7 +50,7 @@ function App() {
 
   useEffect(() => {
     getUserInfo();
-  }, [loggedIn]);
+  }, []);
 
   function getUserInfo() {
     MainApi.getUserInfo()
@@ -60,6 +60,7 @@ function App() {
       })
       .catch((err) => {
         console.log(SERVER_ERROR);
+        onSignOut();
       })
       .finally(() => {
         setIsLoading(false);
@@ -338,6 +339,7 @@ function App() {
               path="/profile"
               loggedIn={loggedIn}
               component={Profile}
+              //updateUser={updateUser}
               isLoading={isLoading}
               onSignOut={onSignOut}
               openPopup={openPopup}

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import mainApi from "../../utils/MainApi";
 
 function Profile({ onSignOut, openPopup }) {
-  const [inputValues, setInputValues] = useState({});
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
@@ -14,7 +13,8 @@ function Profile({ onSignOut, openPopup }) {
   const [emailError, setEmailError] = useState("");
   const [emailErrorBool, setEmailErrorBool] = useState(true);
   const [formValid, setFormValid] = useState(false);
-
+  console.log(name)
+        console.log(email)
   const handleChangeName = (evt) => {
     const validName = /^[а-яА-ЯёЁa-zA-Z0-9 -]+$/.test(evt.target.value);
     if (evt.target.value.length < 2) {
@@ -31,7 +31,6 @@ function Profile({ onSignOut, openPopup }) {
     } else {
       setNameError("");
       setNameErrorBool(true);
-      setInputValues({ ...inputValues, [name]: evt.target.value });
     }
     setName(evt.target.value);
   };
@@ -47,11 +46,9 @@ function Profile({ onSignOut, openPopup }) {
     } else {
       setEmailError("");
       setEmailErrorBool(true);
-      setInputValues({ ...inputValues, [email]: evt.target.value });
     }
     setEmail(evt.target.value);
   };
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
     mainApi
@@ -60,19 +57,34 @@ function Profile({ onSignOut, openPopup }) {
         setName(name);
         setEmail(email);
         openPopup("Данные успешно изменены!");
+        setFormValid(false);
+
       })
       .catch((err) => {
         openPopup(`Что-то пошло не так! ${err}`);
       });
   };
+  useEffect(()=>{
+      mainApi.getUserInfo()
+      .then(() => {
+        setName(name);
+        setEmail(email);
+        console.log(name)
+        console.log(email)
+      })
+      .catch((err) => {
+        console.log(err);
+        //onSignOut();
+      })
+    },[name, email])
 
   useEffect(() => {
-    if (name && email && !nameError && !emailError) {
+    if (name && email && !nameError && !emailError && (name !== currentUser.name || email !== currentUser.email)) {
       setFormValid(true);
     } else {
       setFormValid(false);
     }
-  }, [name, email, nameError, emailError]);
+  }, [name, email, nameError, emailError, currentUser.name, currentUser.email]);
 
   return (
     <>
@@ -95,7 +107,7 @@ function Profile({ onSignOut, openPopup }) {
                       : "profile__form-input profile__form-input_err"
                   }
                   placeholder="Имя"
-                  value={name || inputValues.name}
+                  value={name || ''}
                   onChange={handleChangeName}
                   required
                 />
@@ -113,7 +125,7 @@ function Profile({ onSignOut, openPopup }) {
                   id="email"
                   name="email"
                   type="email"
-                  value={email || inputValues.email}
+                  value={email || ''}
                   onChange={handleChangeEmail}
                   className={
                     emailErrorBool
@@ -131,6 +143,7 @@ function Profile({ onSignOut, openPopup }) {
             <div className="profile__buttons">
               <button
                 type="submit"
+                onclick = {handleSubmit}
                 disabled={!formValid}
                 className={
                   formValid
