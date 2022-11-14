@@ -28,6 +28,7 @@ import {
   REG_ERROR,
   AUTH_ERROR,
   REG_SUCESSFULL,
+  SHOT_DURATION,
 } from "../../utils/constants";
 
 function App() {
@@ -36,7 +37,9 @@ function App() {
   const [userFoundMovies, setUserFoundMovies] = useState([]);
   const [userSavedMovies, setUserSavedMovies] = useState([]);
   const [userSavedMoviesCopy, setUserSavedMoviesCopy] = useState([]);
-  const [checkBoxActive, setCheckboxActive] = useState(false);
+  const [checkBoxActive, setCheckboxActive] = useState(
+    JSON.parse(localStorage.getItem("checkboxLocal"))
+  );
   const [loggedIn, setLoggedIn] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [currentUser, setCurrentUser] = useState({});
@@ -48,7 +51,7 @@ function App() {
   useEffect(() => {
     getUserInfo();
   }, [loggedIn]);
-  
+
   function getUserInfo() {
     MainApi.getUserInfo()
       .then((data) => {
@@ -88,6 +91,7 @@ function App() {
         if (res._id) {
           setPopupTitle(REG_SUCESSFULL);
           setIsOpenPopup(true);
+          setCheckboxActive(false);
           onLogin({ email, password });
         }
       })
@@ -131,6 +135,9 @@ function App() {
         localStorage.clear();
         setAllMovies([]);
         setSearchInput("");
+        setUserFoundMovies([]);
+        setUserSavedMovies([]);
+        setUserSavedMoviesCopy([]);
         history.push("/");
       })
       .catch((err) => {
@@ -141,16 +148,23 @@ function App() {
       });
   };
 
+  const searchedMovies = userFoundMovies.filter((movie) => {
+    if (localStorage.getItem("searchInput") !== "") {
+      return movie.nameRU.toLowerCase().includes(searchInput);
+    } else {
+      return "";
+    }
+  });
+
+  useEffect(() => {
+    const searchResult = localStorage.getItem("searchInput");
+    setSearchInput(searchResult);
+  }, [searchInput]);
+
   const showSavedMovies = userSavedMovies.filter((movie) => {
     if (searchInput !== "") {
       return movie.nameRU.toLowerCase().includes(searchInput);
     } else return userSavedMovies;
-  });
-
-  const searchedMovies = userFoundMovies.filter((movie) => {
-    if (searchInput !== "") {
-      return movie.nameRU.toLowerCase().includes(searchInput);
-    } else return "";
   });
 
   function handleSavedMoviesSearch() {
@@ -186,23 +200,25 @@ function App() {
   }
 
   const handleCheckbox = () => {
-    localStorage.getItem("checkboxLocal");
     if (!localStorage.getItem("checkboxLocal")) {
-      localStorage.setItem("checkboxLocal", checkBoxActive);
+      localStorage.setItem("checkboxLocal", JSON.stringify(checkBoxActive));
     }
     if (checkBoxActive) {
+      localStorage.setItem("checkboxLocal", JSON.stringify(!checkBoxActive));
       setCheckboxActive(false);
     } else if (!checkBoxActive) {
+      localStorage.setItem("checkboxLocal", JSON.stringify(!checkBoxActive));
       setCheckboxActive(true);
     }
   };
 
   useEffect(() => {
-    localStorage.getItem("checkboxLocal");
+    getMovies();
+    JSON.parse(localStorage.getItem("checkboxLocal"));
     let filteredMovies;
     if (checkBoxActive) {
       filteredMovies = userSavedMoviesCopy.filter(
-        (movie) => movie.duration <= 40
+        (movie) => movie.duration <= SHOT_DURATION
       );
     } else if (!checkBoxActive) {
       filteredMovies = userSavedMoviesCopy;
@@ -211,26 +227,25 @@ function App() {
   }, [checkBoxActive, userSavedMoviesCopy]);
 
   useEffect(() => {
-    localStorage.getItem("checkboxLocal");
+    JSON.parse(localStorage.getItem("checkboxLocal"));
     let filteredMovies;
     if (checkBoxActive) {
-      filteredMovies = allMovies.filter((movie) => movie.duration <= 40);
+      filteredMovies = allMovies.filter(
+        (movie) => movie.duration <= SHOT_DURATION
+      );
     } else if (!checkBoxActive) {
       filteredMovies = allMovies;
     }
     setUserFoundMovies(filteredMovies);
   }, [checkBoxActive, allMovies]);
 
-  useEffect(() => {
-    const searchResult = JSON.parse(localStorage.getItem("searchInput"));
-    setSearchInput(searchResult);
-  }, [searchInput]);
-
   const searchMoviesHandler = (evt) => {
-    const search = evt.target.value.toLowerCase();
-    localStorage.setItem("searchInput", JSON.stringify(search));
-    const searchResult = JSON.parse(localStorage.getItem("searchInput"));
+    const searchResult = evt.target.value.toLowerCase();
+    console.log(searchResult);
+    localStorage.setItem("searchInput", searchResult);
+    console.log(localStorage.getItem("searchInput"));
     setSearchInput(searchResult);
+    console.log(searchResult);
   };
 
   function handleSaveMovie(movie, setMovieId) {
@@ -280,50 +295,54 @@ function App() {
             <Main />
           </Route>
 
-          <ProtectedRoute
-            exact
-            path="/movies"
-            loggedIn={loggedIn}
-            component={Movies}
-            isLoading={isLoading}
-            getMovies={getMovies}
-            searchedMovies={searchedMovies}
-            userSavedMovies={userSavedMovies}
-            handleSaveMovie={handleSaveMovie}
-            handleMovieDelete={handleMovieDelete}
-            searchMoviesHandler={searchMoviesHandler}
-            handleCheckbox={handleCheckbox}
-            checkBoxActive={checkBoxActive}
-            searchInput={searchInput}
-            openPopup={openPopup}
-          />
+          {loggedIn && (
+            <ProtectedRoute
+              exact
+              path="/movies"
+              loggedIn={loggedIn}
+              component={Movies}
+              isLoading={isLoading}
+              getMovies={getMovies}
+              searchedMovies={searchedMovies}
+              userSavedMovies={userSavedMovies}
+              handleSaveMovie={handleSaveMovie}
+              handleMovieDelete={handleMovieDelete}
+              searchMoviesHandler={searchMoviesHandler}
+              handleCheckbox={handleCheckbox}
+              checkBoxActive={checkBoxActive}
+              searchInput={searchInput}
+              openPopup={openPopup}
+            />
+          )}
+          {loggedIn && (
+            <ProtectedRoute
+              exact
+              path="/saved-movies"
+              loggedIn={loggedIn}
+              component={SavedMovies}
+              searchedMovies={showSavedMovies}
+              userSavedMovies={userSavedMovies}
+              handleSaveMovie={handleSaveMovie}
+              handleMovieDelete={handleMovieDelete}
+              handleSavedMoviesSearch={handleSavedMoviesSearch}
+              searchMoviesHandler={searchMoviesHandler}
+              handleCheckbox={handleCheckbox}
+              checkBoxActive={checkBoxActive}
+              searchInput={searchInput}
+              openPopup={openPopup}
+            />
+          )}
 
-          <ProtectedRoute
-            exact
-            path="/saved-movies"
-            loggedIn={loggedIn}
-            component={SavedMovies}
-            searchedMovies={showSavedMovies}
-            userSavedMovies={userSavedMovies}
-            handleSaveMovie={handleSaveMovie}
-            handleMovieDelete={handleMovieDelete}
-            handleSavedMoviesSearch={handleSavedMoviesSearch}
-            searchMoviesHandler={searchMoviesHandler}
-            handleCheckbox={handleCheckbox}
-            checkBoxActive={checkBoxActive}
-            searchInput={searchInput}
-            openPopup={openPopup}
-          />
-
-          <ProtectedRoute
-            path="/profile"
-            loggedIn={loggedIn}
-            component={Profile}
-            isLoading={isLoading}
-            onSignOut={onSignOut}
-            openPopup={openPopup}
-          />
-
+          {loggedIn && (
+            <ProtectedRoute
+              path="/profile"
+              loggedIn={loggedIn}
+              component={Profile}
+              isLoading={isLoading}
+              onSignOut={onSignOut}
+              openPopup={openPopup}
+            />
+          )}
           <Route path="/signin">
             {() =>
               isLoading ? (

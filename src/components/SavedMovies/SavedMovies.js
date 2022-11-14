@@ -1,23 +1,36 @@
 import "./SavedMovies.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
 function SavedMovies({
-  searchedMovies,
   userSavedMovies,
   handleSaveMovie,
   handleMovieDelete,
   handleSavedMoviesSearch,
-  loggedIn,
-  searchMoviesHandler,
   handleCheckbox,
   checkBoxActive,
-  searchInput,
 }) {
+  const [searchInputSave, setSearchInputSave] = useState("");
   useEffect(() => {
     handleSavedMoviesSearch();
   }, []);
+
+  useEffect(() => {
+    setSearchInputSave("");
+  }, []);
+
+  const showSavedMovies = userSavedMovies.filter((movie) => {
+    if (searchInputSave !== "") {
+      return movie.nameRU.toLowerCase().includes(searchInputSave);
+    } else return userSavedMovies;
+  });
+
+  const searchMoviesHandler = (evt) => {
+    const searchResult = evt.target.value.toLowerCase();
+    localStorage.setItem("searchInputSave", searchResult);
+    setSearchInputSave(searchResult);
+  };
 
   return (
     <div className="saved-movies">
@@ -26,11 +39,11 @@ function SavedMovies({
           searchMoviesHandler={searchMoviesHandler}
           handleCheckbox={handleCheckbox}
           checkBoxActive={checkBoxActive}
-          searchInput={searchInput}
+          searchInput={searchInputSave}
         />
 
         <MoviesCardList
-          searchedMovies={searchedMovies}
+          searchedMovies={showSavedMovies}
           userSavedMovies={userSavedMovies}
           handleSaveMovie={handleSaveMovie}
           handleMovieDelete={handleMovieDelete}

@@ -15,6 +15,7 @@ function Movies({
   checkBoxActive,
   searchInput,
 }) {
+  
   return (
     <div className="movies">
       <main>

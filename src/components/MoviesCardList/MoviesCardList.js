@@ -3,6 +3,16 @@ import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 import useMediaQuery from "../../hooks/useMediaQuery";
+import {
+  NUMBER_OF_DESKTOP,
+  NUMBER_OF_TABLET,
+  NUMBER_OF_MOBILE,
+  WIDTH_OF_DESKTOP,
+  WIDTH_OF_TABLET,
+  WIDTH_OF_MOBILE,
+  ADD_OF_DESKTOP,
+  ADD_OF_TABLET_OR_MOBILE,
+} from "../../utils/constants";
 
 const MoviesCardList = ({
   searchedMovies,
@@ -11,20 +21,20 @@ const MoviesCardList = ({
   handleMovieDelete,
   isLoading,
 }) => {
-  const [cardsCount, setCardsCount] = useState(12); 
+  const [cardsCount, setCardsCount] = useState(NUMBER_OF_DESKTOP); 
   const [movieList, setMovieList] = useState([]); 
   const [foundError, setFoundError] = useState("");
-  const isDesktop = useMediaQuery("(min-width: 769px)");
-  const isTablet = useMediaQuery("(max-width: 768px)");
-  const isMobile = useMediaQuery("(max-width: 480px)");
+  const isDesktop = useMediaQuery(WIDTH_OF_DESKTOP);
+  const isTablet = useMediaQuery(WIDTH_OF_TABLET);
+  const isMobile = useMediaQuery(WIDTH_OF_MOBILE);
 
   function mediaQueryHooks() {
     if (isDesktop && !isMobile && !isTablet) {
-      setCardsCount(12);
+      setCardsCount(NUMBER_OF_DESKTOP);
     } else if (isTablet && !isMobile) {
-      setCardsCount(8);
+      setCardsCount(NUMBER_OF_TABLET);
     } else if (isMobile) {
-      setCardsCount(5);
+      setCardsCount(NUMBER_OF_MOBILE);
     }
   }
 
@@ -61,11 +71,11 @@ const MoviesCardList = ({
 
   function handleAddMoreCards() {
     if (isDesktop && !isMobile && !isTablet) {
-      setCardsCount(cardsCount + 3);
+      setCardsCount(cardsCount + ADD_OF_DESKTOP);
     } else if (isTablet && !isMobile) {
-      setCardsCount(cardsCount + 2);
+      setCardsCount(cardsCount + ADD_OF_TABLET_OR_MOBILE);
     } else if (isMobile) {
-      setCardsCount(cardsCount + 2);
+      setCardsCount(cardsCount + ADD_OF_TABLET_OR_MOBILE);
     }
   }
   return (

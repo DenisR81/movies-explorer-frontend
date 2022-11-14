@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-//import Header from "../Header/Header";
 import "./Profile.css";
 import { Link } from "react-router-dom";
 import mainApi from "../../utils/MainApi";

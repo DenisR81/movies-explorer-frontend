@@ -5,14 +5,20 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 function SearchForm({
   searchMoviesHandler,
   handleCheckbox,
+  //handleSearch,
   getMovies,
   checkBoxActive,
   searchInput,
 }) {
+  //const [input, setInput] = useState("");
   function onSubmitForm(event) {
     event.preventDefault();
   }
-
+  /*function handleSearch(evt) {
+    setInput(evt.target.value.toLowerCase());
+  }
+//console.log(input);
+//console.log(handleSearch);*/
   return (
     <form
       className="search-form"
