@@ -50,7 +50,8 @@ function App() {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
   function getUserInfo() {
     MainApi.getUserInfo()
@@ -242,11 +243,8 @@ function App() {
 
   const searchMoviesHandler = (evt) => {
     const searchResult = evt.target.value.toLowerCase();
-    console.log(searchResult);
     localStorage.setItem("searchInput", searchResult);
-    console.log(localStorage.getItem("searchInput"));
     setSearchInput(searchResult);
-    console.log(searchResult);
   };
 
   function handleSaveMovie(movie, setMovieId) {
@@ -339,7 +337,6 @@ function App() {
               path="/profile"
               loggedIn={loggedIn}
               component={Profile}
-              //updateUser={updateUser}
               isLoading={isLoading}
               onSignOut={onSignOut}
               openPopup={openPopup}

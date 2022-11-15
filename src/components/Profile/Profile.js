@@ -13,8 +13,6 @@ function Profile({ onSignOut, openPopup }) {
   const [emailError, setEmailError] = useState("");
   const [emailErrorBool, setEmailErrorBool] = useState(true);
   const [formValid, setFormValid] = useState(false);
-  console.log(name)
-        console.log(email)
   const handleChangeName = (evt) => {
     const validName = /^[а-яА-ЯёЁa-zA-Z0-9 -]+$/.test(evt.target.value);
     if (evt.target.value.length < 2) {
@@ -53,9 +51,11 @@ function Profile({ onSignOut, openPopup }) {
     evt.preventDefault();
     mainApi
       .updateUserInfo({ name, email })
-      .then(() => {
+      .then((res) => {
         setName(name);
         setEmail(email);
+        currentUser.name = name;
+        currentUser.email = email;
         openPopup("Данные успешно изменены!");
         setFormValid(false);
 
@@ -69,12 +69,9 @@ function Profile({ onSignOut, openPopup }) {
       .then(() => {
         setName(name);
         setEmail(email);
-        console.log(name)
-        console.log(email)
       })
       .catch((err) => {
         console.log(err);
-        //onSignOut();
       })
     },[name, email])
 
@@ -87,6 +84,7 @@ function Profile({ onSignOut, openPopup }) {
   }, [name, email, nameError, emailError, currentUser.name, currentUser.email]);
 
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <>
       <div className="profile">
         <main>
@@ -161,6 +159,7 @@ function Profile({ onSignOut, openPopup }) {
         </main>
       </div>
     </>
+    </CurrentUserContext.Provider>
   );
 }
 
