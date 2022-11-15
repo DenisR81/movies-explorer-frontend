@@ -1,6 +1,7 @@
 import { Route, Redirect } from 'react-router-dom';
 import Preloader from '../Preloader/Preloader';
 
+
 const ProtectedRoute = ({ component: Component, ...props }) => {
   return (
     <Route>
@@ -8,5 +9,4 @@ const ProtectedRoute = ({ component: Component, ...props }) => {
     </Route>
   );
 };
-
 export default ProtectedRoute;

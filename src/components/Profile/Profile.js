@@ -52,6 +52,7 @@ function Profile({ onSignOut, openPopup }) {
     mainApi
       .updateUserInfo({ name, email })
       .then((res) => {
+
         setName(name);
         setEmail(email);
         currentUser.name = name;
@@ -62,7 +63,7 @@ function Profile({ onSignOut, openPopup }) {
       })
       .catch((err) => {
         openPopup(`Что-то пошло не так! ${err}`);
-      });
+      })
   };
   useEffect(()=>{
       mainApi.getUserInfo()

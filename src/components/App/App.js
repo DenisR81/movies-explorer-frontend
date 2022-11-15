@@ -67,7 +67,6 @@ function App() {
         setIsLoading(false);
       });
   }
-
   useEffect(() => {
     if (loggedIn) {
       MainApi.getUserInfo()
@@ -90,6 +89,7 @@ function App() {
   function onRegister({ name, email, password }) {
     MainApi.registerUser({ name, email, password })
       .then((res) => {
+        setIsLoading(true);
         if (res._id) {
           setPopupTitle(REG_SUCESSFULL);
           setIsOpenPopup(true);
@@ -100,12 +100,16 @@ function App() {
       .catch((err) => {
         setPopupTitle(REG_ERROR);
         setIsOpenPopup(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }
 
   const onLogin = ({ email, password }) => {
     return MainApi.loginUser(email, password)
       .then((data) => {
+        setIsLoading(true);
         if (data) {
           localStorage.setItem("jwt", data.token);
           setLoggedIn(true);
@@ -116,6 +120,9 @@ function App() {
       .catch((err) => {
         setPopupTitle(AUTH_ERROR);
         setIsOpenPopup(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -313,6 +320,7 @@ function App() {
               openPopup={openPopup}
             />
           )}
+          
           {loggedIn && (
             <ProtectedRoute
               exact

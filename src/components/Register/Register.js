@@ -3,7 +3,7 @@ import "./Register.css";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo-header.svg";
 
-function Register({ onRegister }) {
+function Register({ onRegister, isLoading }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -151,7 +151,7 @@ function Register({ onRegister }) {
           </span>
           <button
             type="submit"
-            disabled={!formValid}
+            disabled={!formValid || isLoading}
             className={
               formValid
                 ? "register__form-submit"
