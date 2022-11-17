@@ -10,6 +10,7 @@ function SavedMovies({
   handleSavedMoviesSearch,
   handleCheckbox,
   checkBoxActiveSaveFilms,
+  
 }) {
   const [searchInputSave, setSearchInputSave] = useState("");
   useEffect(() => {
@@ -20,7 +21,7 @@ function SavedMovies({
     setSearchInputSave("");
   }, []);
 
-  const showSavedMovies = userSavedMovies.filter((movie) => {
+  const showSavedMovies = userSavedMovies.filter((movie,evt) => {
     if (searchInputSave !== "") {
       return movie.nameRU.toLowerCase().includes(searchInputSave);
     } else return userSavedMovies;

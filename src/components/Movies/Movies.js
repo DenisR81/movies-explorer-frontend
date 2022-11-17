@@ -14,6 +14,7 @@ function Movies({
   isLoading,
   checkBoxActive,
   searchInput,
+  tokenCheck,
 }) {
   
   return (
@@ -25,6 +26,7 @@ function Movies({
           getMovies={getMovies}
           checkBoxActive={checkBoxActive}
           searchInput={searchInput}
+          tokenCheck={tokenCheck}
         ></SearchForm>
         <MoviesCardList
           searchedMovies={searchedMovies}

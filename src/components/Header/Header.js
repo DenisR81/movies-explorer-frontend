@@ -6,10 +6,11 @@ import { Link, NavLink } from "react-router-dom";
 import MobileMenu from "../MobileMenu/MobileMenu";
 import "./Header.css";
 
-function Header({ loggedIn }) {
+function Header({ loggedIn, tokenCheck }) {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   function handleBurgerClick() {
     setIsMenuOpen(!isMenuOpen);
+    tokenCheck();
   }
   return (
     <header className={
@@ -31,18 +32,18 @@ function Header({ loggedIn }) {
           <nav className="header__login">
             <ul className="header__nav-login">
               <li className="header__nav-item">
-                <NavLink to="/movies" className="header__nav-link" activeClassName='header__link_active'>
+                <NavLink to="/movies" className="header__nav-link" activeClassName='header__link_active' onClick={tokenCheck}>
                   Фильмы
                 </NavLink>
               </li>
               <li className="header__nav-item">
-                <NavLink to="/saved-movies" className="header__nav-link" activeClassName='header__link_active'>
+                <NavLink to="/saved-movies" className="header__nav-link" activeClassName='header__link_active' onClick={tokenCheck}>
                   Сохраненные фильмы
                 </NavLink>
               </li>
             </ul>
             <div>
-              <Link to="/profile" className="header__profile">
+              <Link to="/profile" className="header__profile" onClick={tokenCheck}>
                 <img
                   src={account}
                   alt="иконка пользователя"

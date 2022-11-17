@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useEffect} from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useLocation } from 'react-router-dom';
@@ -9,10 +9,16 @@ function SearchForm({
   getMovies,
   checkBoxActive,
   searchInput,
-  checkBoxActiveSaveFilms
+  checkBoxActiveSaveFilms,
+  tokenCheck,
 }) {
+/*useEffect(() => {
+  getUserInfo()
+}, []);*/
+
   function onSubmitForm(event) {
     event.preventDefault();
+    
   }
   const { pathname } = useLocation();
   return (
@@ -20,6 +26,7 @@ function SearchForm({
       className="search-form"
       name="search"
       onSubmit={onSubmitForm}
+      onClick={tokenCheck}
       noValidate
     >
       <div className="search-form__container">
