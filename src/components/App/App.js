@@ -87,9 +87,9 @@ function App() {
   }, [loggedIn]);
 
   function onRegister({ name, email, password }) {
+    setIsLoading(true);
     MainApi.registerUser({ name, email, password })
       .then((res) => {
-        setIsLoading(true);
         if (res._id) {
           setPopupTitle(REG_SUCESSFULL);
           setIsOpenPopup(true);
@@ -100,16 +100,14 @@ function App() {
       .catch((err) => {
         setPopupTitle(REG_ERROR);
         setIsOpenPopup(true);
-      })
-      .finally(() => {
         setIsLoading(false);
       });
   }
 
   const onLogin = ({ email, password }) => {
+    setIsLoading(true);
     return MainApi.loginUser(email, password)
       .then((data) => {
-        setIsLoading(true);
         if (data) {
           localStorage.setItem("jwt", data.token);
           setLoggedIn(true);
@@ -120,8 +118,6 @@ function App() {
       .catch((err) => {
         setPopupTitle(AUTH_ERROR);
         setIsOpenPopup(true);
-      })
-      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -191,8 +187,8 @@ function App() {
       const timer = setTimeout(() => {
         MoviesApi.getMovies()
           .then((downloadedFilms) => {
-            setAllMovies(downloadedFilms);
             localStorage.setItem("allMovies", JSON.stringify(downloadedFilms));
+            setAllMovies(JSON.parse(localStorage.getItem("allMovies")))
           })
           .catch((err) => {
             console.log(err);
@@ -207,7 +203,7 @@ function App() {
       setAllMovies(loadedMovies);
     }
   }
-
+  
   const handleCheckbox = () => {
     if (!localStorage.getItem("checkboxLocal")) {
       localStorage.setItem("checkboxLocal", JSON.stringify(checkBoxActive));
@@ -222,7 +218,7 @@ function App() {
   };
 
   useEffect(() => {
-    getMovies();
+    JSON.parse(localStorage.getItem("allMovies"))
     JSON.parse(localStorage.getItem("checkboxLocal"));
     let filteredMovies;
     if (checkBoxActive) {
@@ -237,13 +233,15 @@ function App() {
 
   useEffect(() => {
     JSON.parse(localStorage.getItem("checkboxLocal"));
-    let filteredMovies;
+    let filteredMovies; 
     if (checkBoxActive) {
-      filteredMovies = allMovies.filter(
+      filteredMovies = JSON.parse(localStorage.getItem("allMovies")).filter(
         (movie) => movie.duration <= SHOT_DURATION
       );
     } else if (!checkBoxActive) {
-      filteredMovies = allMovies;
+      if (!JSON.parse(localStorage.getItem("allMovies"))) {filteredMovies = []}
+      else
+      {filteredMovies = JSON.parse(localStorage.getItem("allMovies"))};
     }
     setUserFoundMovies(filteredMovies);
   }, [checkBoxActive, allMovies]);
