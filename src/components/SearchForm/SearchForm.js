@@ -1,6 +1,7 @@
 import React from "react";
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
+import { useLocation } from 'react-router-dom';
 
 function SearchForm({
   searchMoviesHandler,
@@ -8,11 +9,12 @@ function SearchForm({
   getMovies,
   checkBoxActive,
   searchInput,
+  checkBoxActiveSaveFilms
 }) {
   function onSubmitForm(event) {
     event.preventDefault();
   }
-
+  const { pathname } = useLocation();
   return (
     <form
       className="search-form"
@@ -41,10 +43,14 @@ function SearchForm({
         />
       </div>
       <label className="search-form__checkbox" htmlFor="shorts">
-        <FilterCheckbox
+      {pathname === "/movies" ?
+        (<FilterCheckbox
           handleCheckbox={handleCheckbox}
           checkBoxActive={checkBoxActive}
-        />
+        />) : <FilterCheckbox
+        handleCheckbox={handleCheckbox}
+        checkBoxActive={checkBoxActiveSaveFilms}
+      />}
         <p className="search-form__text">Короткометражки</p>
       </label>
     </form>

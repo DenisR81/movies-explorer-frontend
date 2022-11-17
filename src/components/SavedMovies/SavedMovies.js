@@ -9,7 +9,7 @@ function SavedMovies({
   handleMovieDelete,
   handleSavedMoviesSearch,
   handleCheckbox,
-  checkBoxActive,
+  checkBoxActiveSaveFilms,
 }) {
   const [searchInputSave, setSearchInputSave] = useState("");
   useEffect(() => {
@@ -28,7 +28,7 @@ function SavedMovies({
 
   const searchMoviesHandler = (evt) => {
     const searchResult = evt.target.value.toLowerCase();
-    localStorage.setItem("searchInputSave", searchResult);
+    //localStorage.setItem("searchInputSave", searchResult);
     setSearchInputSave(searchResult);
   };
 
@@ -38,7 +38,7 @@ function SavedMovies({
         <SearchForm
           searchMoviesHandler={searchMoviesHandler}
           handleCheckbox={handleCheckbox}
-          checkBoxActive={checkBoxActive}
+          checkBoxActiveSaveFilms={checkBoxActiveSaveFilms}
           searchInput={searchInputSave}
         />
 

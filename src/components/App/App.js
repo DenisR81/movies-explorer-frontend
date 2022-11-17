@@ -37,9 +37,8 @@ function App() {
   const [userFoundMovies, setUserFoundMovies] = useState([]);
   const [userSavedMovies, setUserSavedMovies] = useState([]);
   const [userSavedMoviesCopy, setUserSavedMoviesCopy] = useState([]);
-  const [checkBoxActive, setCheckboxActive] = useState(
-    JSON.parse(localStorage.getItem("checkboxLocal"))
-  );
+  const [checkBoxActive, setCheckboxActive] = useState(false);
+  const [checkBoxActiveSaveFilms, setCheckboxActiveSaveFilms] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [currentUser, setCurrentUser] = useState({});
@@ -47,9 +46,18 @@ function App() {
   const [popupTitle, setPopupTitle] = useState("");
   const { pathname } = useLocation();
   const history = useHistory();
-
+console.log(checkBoxActive)
+console.log(checkBoxActiveSaveFilms)
   useEffect(() => {
     getUserInfo();
+
+    if (localStorage.getItem("checkboxLocal") === 'true')
+    {setCheckboxActive(true)} 
+    else{setCheckboxActive(false)}
+
+    if (localStorage.getItem("checkboxLocalSaveFilms") === 'true')
+    {setCheckboxActiveSaveFilms(true)} 
+    else{setCheckboxActiveSaveFilms(false)}
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
 
@@ -78,7 +86,9 @@ function App() {
         .then((data) => {
           setUserSavedMovies(data);
           setUserSavedMoviesCopy(data);
-          localStorage.setItem("userSavedMovies", JSON.stringify(data));
+          //localStorage.setItem("userSavedMovies", JSON.stringify(data));
+         // localStorage.setItem("checkboxLocal", JSON.stringify(checkBoxActive));
+
         })
         .catch((err) => {
           console.log(err);
@@ -205,7 +215,10 @@ function App() {
   }
   
   const handleCheckbox = () => {
-    if (!localStorage.getItem("checkboxLocal")) {
+    if (pathname === '/movies') 
+    {setCheckboxActive(!checkBoxActive);
+    localStorage.setItem("checkboxLocal", JSON.stringify(checkBoxActive));
+    /*if (!localStorage.getItem("checkboxLocal")) {
       localStorage.setItem("checkboxLocal", JSON.stringify(checkBoxActive));
     }
     if (checkBoxActive) {
@@ -213,23 +226,24 @@ function App() {
       setCheckboxActive(false);
     } else if (!checkBoxActive) {
       localStorage.setItem("checkboxLocal", JSON.stringify(!checkBoxActive));
-      setCheckboxActive(true);
-    }
+      setCheckboxActive(true);*/
+    } else if (pathname === '/saved-movies')
+    {setCheckboxActiveSaveFilms(!checkBoxActiveSaveFilms);
+      localStorage.setItem("checkboxLocalSaveFilms", JSON.stringify(checkBoxActiveSaveFilms));}
   };
 
   useEffect(() => {
-    JSON.parse(localStorage.getItem("allMovies"))
-    JSON.parse(localStorage.getItem("checkboxLocal"));
+    JSON.parse(localStorage.getItem("checkboxLocalSaveFilms"));
     let filteredMovies;
-    if (checkBoxActive) {
+    if (checkBoxActiveSaveFilms) {
       filteredMovies = userSavedMoviesCopy.filter(
         (movie) => movie.duration <= SHOT_DURATION
       );
-    } else if (!checkBoxActive) {
+    } else if (!checkBoxActiveSaveFilms) {
       filteredMovies = userSavedMoviesCopy;
     }
     setUserSavedMovies(filteredMovies);
-  }, [checkBoxActive, userSavedMoviesCopy]);
+  }, [checkBoxActiveSaveFilms, userSavedMoviesCopy]);
 
   useEffect(() => {
     JSON.parse(localStorage.getItem("checkboxLocal"));
@@ -332,7 +346,7 @@ function App() {
               handleSavedMoviesSearch={handleSavedMoviesSearch}
               searchMoviesHandler={searchMoviesHandler}
               handleCheckbox={handleCheckbox}
-              checkBoxActive={checkBoxActive}
+              checkBoxActiveSaveFilms={checkBoxActiveSaveFilms}
               searchInput={searchInput}
               openPopup={openPopup}
             />
