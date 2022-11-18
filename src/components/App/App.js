@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import {
@@ -37,7 +38,9 @@ function App() {
   const [userFoundMovies, setUserFoundMovies] = useState([]);
   const [userSavedMovies, setUserSavedMovies] = useState([]);
   const [userSavedMoviesCopy, setUserSavedMoviesCopy] = useState([]);
-  const [checkBoxActive, setCheckboxActive] = useState(JSON.parse(localStorage.getItem("checkboxLocal")));
+  const [checkBoxActive, setCheckboxActive] = useState(
+    JSON.parse(localStorage.getItem("checkboxLocal"))
+  );
   const [checkBoxActiveSaveFilms, setCheckboxActiveSaveFilms] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -76,7 +79,9 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       MainApi.getUserInfo()
-        .then((res) => setCurrentUser(res))
+        .then((res) => {
+          setCurrentUser(res);
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -84,7 +89,6 @@ function App() {
         .then((data) => {
           setUserSavedMovies(data);
           setUserSavedMoviesCopy(data);
-
         })
         .catch((err) => {
           console.log(err);
@@ -127,22 +131,12 @@ function App() {
         setIsLoading(false);
       });
   };
- 
-/*function tokenCheck() {
-  if (!localStorage.getItem("jwt")) {
-        setLoggedIn(false);
-        setCurrentUser({});
-        localStorage.clear();
-        setAllMovies([]);
-        setSearchInput("");
-        setUserFoundMovies([]);
-        setUserSavedMovies([]);
-        setUserSavedMoviesCopy([]);
-        history.push("/");
-  }
-}*/
-function tokenCheck() {
-  MainApi.getToken()
+
+  function tokenCheck() {
+    MainApi.getToken()
+      .then((data) => {
+        setCheckboxActiveSaveFilms(false);
+      })
       .catch((err) => {
         console.log(SERVER_ERROR);
         setLoggedIn(false);
@@ -154,12 +148,13 @@ function tokenCheck() {
         setUserSavedMovies([]);
         setUserSavedMoviesCopy([]);
         history.push("/");
-      })
+      });
   }
 
-useEffect(() => {
-  tokenCheck()
-},[])
+  useEffect(() => {
+    tokenCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function openPopup(textError) {
     setPopupTitle(textError);
@@ -227,7 +222,7 @@ useEffect(() => {
         MoviesApi.getMovies()
           .then((downloadedFilms) => {
             localStorage.setItem("allMovies", JSON.stringify(downloadedFilms));
-            setAllMovies(JSON.parse(localStorage.getItem("allMovies")))
+            setAllMovies(JSON.parse(localStorage.getItem("allMovies")));
           })
           .catch((err) => {
             console.log(err);
@@ -242,18 +237,17 @@ useEffect(() => {
       setAllMovies(loadedMovies);
     }
   }
-  
+
   const handleCheckbox = () => {
-    if (pathname === '/movies') 
-    {setCheckboxActive(!checkBoxActive);
-    localStorage.setItem("checkboxLocal", JSON.stringify(!checkBoxActive));
-    } else if (pathname === '/saved-movies')
-    {setCheckboxActiveSaveFilms(!checkBoxActiveSaveFilms);
-      localStorage.setItem("checkboxLocalSaveFilms", JSON.stringify(!checkBoxActiveSaveFilms));}
+    if (pathname === "/movies") {
+      setCheckboxActive(!checkBoxActive);
+      localStorage.setItem("checkboxLocal", JSON.stringify(!checkBoxActive));
+    } else if (pathname === "/saved-movies") {
+      setCheckboxActiveSaveFilms(!checkBoxActiveSaveFilms);
+    }
   };
 
   useEffect(() => {
-    JSON.parse(localStorage.getItem("checkboxLocalSaveFilms"));
     let filteredMovies;
     if (checkBoxActiveSaveFilms) {
       filteredMovies = userSavedMoviesCopy.filter(
@@ -267,15 +261,21 @@ useEffect(() => {
 
   useEffect(() => {
     JSON.parse(localStorage.getItem("checkboxLocal"));
-    let filteredMovies; 
+    let filteredMovies;
     if (checkBoxActive) {
-      filteredMovies = JSON.parse(localStorage.getItem("allMovies")).filter(
-        (movie) => movie.duration <= SHOT_DURATION
-      );
+      if (!JSON.parse(localStorage.getItem("allMovies"))) {
+        filteredMovies = [];
+      } else {
+        filteredMovies = JSON.parse(localStorage.getItem("allMovies")).filter(
+          (movie) => movie.duration <= SHOT_DURATION
+        );
+      }
     } else if (!checkBoxActive) {
-      if (!JSON.parse(localStorage.getItem("allMovies"))) {filteredMovies = []}
-      else
-      {filteredMovies = JSON.parse(localStorage.getItem("allMovies"))};
+      if (!JSON.parse(localStorage.getItem("allMovies"))) {
+        filteredMovies = [];
+      } else {
+        filteredMovies = JSON.parse(localStorage.getItem("allMovies"));
+      }
     }
     setUserFoundMovies(filteredMovies);
   }, [checkBoxActive, allMovies]);
@@ -323,7 +323,11 @@ useEffect(() => {
         pathname === "/movies" ||
         pathname === "/saved-movies" ||
         pathname === "/" ? (
-          <Header loggedIn={loggedIn} isLoading={isLoading} tokenCheck={tokenCheck} />
+          <Header
+            loggedIn={loggedIn}
+            isLoading={isLoading}
+            tokenCheck={tokenCheck}
+          />
         ) : (
           ""
         )}
@@ -353,7 +357,7 @@ useEffect(() => {
               tokenCheck={tokenCheck}
             />
           )}
-          
+
           {loggedIn && (
             <ProtectedRoute
               exact

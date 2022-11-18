@@ -28,7 +28,7 @@ const Card = (props) => {
   }
   function handleLikeClick() {
     saveMovie();
-    setSavedCard(!isSaved);
+    setSavedCard(!isSaved)
   }
 
   return (

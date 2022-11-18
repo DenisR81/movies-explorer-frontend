@@ -19,7 +19,7 @@ function Header({ loggedIn, tokenCheck }) {
         : "header header_blue"
     }>
       <Link to="/">
-        <img src={logo} alt="Логотип" className="header__logo" />
+        <img src={logo} alt="Логотип" className="header__logo" onClick={tokenCheck}/>
       </Link>
       {loggedIn ? (
         <div className="header__block">
