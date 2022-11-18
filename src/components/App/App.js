@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     getUserInfo();
-  }, [loggedIn]);
+  }, []);
 
   function getUserInfo() {
     MainApi.getUserInfo()
@@ -128,7 +128,7 @@ function App() {
       });
   };
  
-function tokenCheck() {
+/*function tokenCheck() {
   if (!localStorage.getItem("jwt")) {
         setLoggedIn(false);
         setCurrentUser({});
@@ -140,11 +140,26 @@ function tokenCheck() {
         setUserSavedMoviesCopy([]);
         history.push("/");
   }
-}
+}*/
+function tokenCheck() {
+  MainApi.getToken()
+      .catch((err) => {
+        console.log(SERVER_ERROR);
+        setLoggedIn(false);
+        setCurrentUser({});
+        localStorage.clear();
+        setAllMovies([]);
+        setSearchInput("");
+        setUserFoundMovies([]);
+        setUserSavedMovies([]);
+        setUserSavedMoviesCopy([]);
+        history.push("/");
+      })
+  }
 
 useEffect(() => {
   tokenCheck()
-})
+},[])
 
   function openPopup(textError) {
     setPopupTitle(textError);
