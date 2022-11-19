@@ -74,7 +74,7 @@ function Profile({ onSignOut, openPopup }) {
       .catch((err) => {
         console.log(err);
       })
-    },[name, email])
+    },[])
 
   useEffect(() => {
     if (name && email && !nameError && !emailError && (name !== currentUser.name || email !== currentUser.email)) {
