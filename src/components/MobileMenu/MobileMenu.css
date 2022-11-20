@@ -63,6 +63,13 @@
 
 .mobile-menu__link:hover {
   opacity: 0.7;
+  padding-bottom: 4px;
+  border-bottom: solid 2px black;
+}
+
+.mobile-menu__link_active {
+  padding-bottom: 4px;
+  border-bottom: solid 2px black;
 }
 
 .mobile-menu__profile:hover {
@@ -78,6 +85,7 @@
   width: 100px;
   height: 32px;
 }
+
 
 @media screen and ( max-width: 500px ) {
   .mobile-menu__bg-active {

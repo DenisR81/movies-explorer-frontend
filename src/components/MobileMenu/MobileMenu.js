@@ -5,10 +5,13 @@ import close from "../../images/close.svg";
 import { Link, NavLink } from "react-router-dom";
 
 function MobileMenu({ isMenuOpen, handleBurgerClick }) {
-  let activeStyle = {
-    paddingBottom: "4px",
-    borderBottom: "solid 2px black",
-  };
+  function handleClickLink(evt) {
+    if (evt.currentTarget.className.includes("mobile-menu__link_active")) {
+      return;
+    }
+    handleBurgerClick();
+  }
+
   return (
     <div className={isMenuOpen ? "mobile-menu__bg" : "mobile-menu__bg-active"}>
       <div className="mobile-menu">
@@ -20,8 +23,14 @@ function MobileMenu({ isMenuOpen, handleBurgerClick }) {
             onClick={handleBurgerClick}
           />
           <ul className="mobile-menu__list">
-            <li className="mobile-menu__item">
-              <NavLink to="/" className="mobile-menu__link">
+            <li className="mobile-menu__item mobile-menu__item_invisible">
+              <NavLink
+                exact
+                to="/"
+                className="mobile-menu__link"
+                activeClassName="mobile-menu__link_active"
+                onClick={handleClickLink}
+              >
                 Главная
               </NavLink>
             </li>
@@ -29,7 +38,8 @@ function MobileMenu({ isMenuOpen, handleBurgerClick }) {
               <NavLink
                 to="/movies"
                 className="mobile-menu__link"
-                style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                activeClassName="mobile-menu__link_active"
+                onClick={handleClickLink}
               >
                 Фильмы
               </NavLink>
@@ -38,7 +48,8 @@ function MobileMenu({ isMenuOpen, handleBurgerClick }) {
               <NavLink
                 to="/saved-movies"
                 className="mobile-menu__link"
-                style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                activeClassName="mobile-menu__link_active"
+                onClick={handleClickLink}
               >
                 Сохраненные фильмы
               </NavLink>
@@ -50,6 +61,7 @@ function MobileMenu({ isMenuOpen, handleBurgerClick }) {
             src={account}
             alt="иконка пользоввателя"
             className="mobile-menu__account-icon"
+            onClick={handleBurgerClick}
           />
         </Link>
       </div>

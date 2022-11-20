@@ -3,7 +3,7 @@ import "../Register/Register.css";
 import { Link } from "react-router-dom";
 import logo from "../../images/logo-header.svg";
 
-function Login() {
+function Login({ onLogin, isLoading }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -38,6 +38,11 @@ function Login() {
     setPassword(evt.target.value);
   };
 
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    onLogin({ email, password });
+  };
+
   useEffect(() => {
     if (email && password && !emailError && !passwordError) {
       setFormValid(true);
@@ -55,7 +60,7 @@ function Login() {
         <h2 className="register__header__text">Рады видеть!</h2>
       </header>
       <main>
-        <form className="register__form">
+        <form className="register__form" onSubmit={handleSubmit}>
           <label htmlFor="email" className="register__form-label">
             E-mail
           </label>
@@ -67,7 +72,7 @@ function Login() {
                 : "register__form-input  register__form-input_err"
             }
             type="email"
-            value={email}
+            value={email || ""}
             placeholder="Email"
             onChange={handleChangeEmail}
             required
@@ -85,7 +90,7 @@ function Login() {
                 ? "register__form-input"
                 : "register__form-input  register__form-input_err"
             }
-            value={password}
+            value={password || ""}
             type="password"
             placeholder="Пароль"
             onChange={handleChangePassword}
@@ -95,9 +100,9 @@ function Login() {
             {passwordError}
           </span>
           <button
-            disabled={!formValid}
+            disabled={!formValid || isLoading}
             className={
-              formValid
+              formValid 
                 ? "register__form-submit"
                 : "register__form-submit  register__form-submit_disabled"
             }

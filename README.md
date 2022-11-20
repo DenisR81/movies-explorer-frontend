@@ -6,6 +6,13 @@
 React.
 
 ## Адрес домена
-https://dipmovies.nomoredomains.sbs
+https://dipmovies.nomoredomains.sbs 
 
-Ссылка на макет https://disk.yandex.ru/d/T2F3nMHK_VPMpw
+## Публичный IP-адрес сервера
+178.154.231.203
+
+## Ссылка на макет 
+https://disk.yandex.ru/d/T2F3nMHK_VPMpw
+
+## Ссылка на pull request
+https://github.com/DenisR81/movies-explorer-frontend/pull/2
